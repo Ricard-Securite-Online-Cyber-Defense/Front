@@ -3,12 +3,12 @@ import App from './App.vue'
 import router from './router'
 import store from './store'
 
-// import css
-import './style.scss'
-
 // import buefy
 import Buefy from 'buefy'
 import 'buefy/dist/buefy.css'
+
+// import css
+import './style.scss'
 
 Vue.use(Buefy)
 
