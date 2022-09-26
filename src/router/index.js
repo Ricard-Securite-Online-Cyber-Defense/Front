@@ -22,6 +22,21 @@ const routes = [
     path: '/login',
     name: 'login',
     component: () => import("@/views/LoginView")
+  },
+  {
+    path: '/frisbee',
+    name: 'frisbee',
+    component: () => import("@/views/Frisbee/FrisbeeView")
+  },
+  {
+    path: '/frisbee/',
+    name: 'createFrisbee',
+    component: () => import("@/views/Frisbee/FrisbeeView")
+  },
+  {
+    path: '/frisbee/:id',
+    name: 'editFrisbee',
+    component: () => import("@/views/Frisbee/FrisbeeView")
   }
 ]
 
