@@ -7,7 +7,7 @@
             v-model="showModal"
             has-modal-card
             trap-focus
-            :destroy-on-hide="false"
+            :destroy-on-hide="true"
             aria-role="dialog"
             :aria-label="title"
             close-button-aria-label="Fermer"
@@ -24,30 +24,44 @@
                             class="delete"
                             @click="$emit('close')"/>
                     </header>
-                    <section class="modal-card-body min-w-[500px]">
-                        <form @submit="submit">
+                    <form @submit.prevent="submit">
+                        <section class="modal-card-body min-w-[500px]">
                             <b-field label="Nom">
-                                <b-input name="name" :value="frisbee.name"/>
+                                <b-input name="name" v-model="frisbee.name" required/>
                             </b-field>
-                            <b-field label="Description">
-                                <b-input name="name" type="text-area" :value="frisbee.description"/>
+                            <b-field label="Description" type="textarea">
+                                <b-input name="name" type="textarea" v-model="frisbee.description" required/>
                             </b-field>
                             <b-field label="Price">
-                                <b-input name="name" type="number" :value="frisbee.price"/>
+                                <b-input name="name" type="number" v-model="frisbee.price" required/>
                             </b-field>
                             <b-field label="Gamme">
-                                <b-select v-model="frisbee.range" expanded>
-                                    <option :value="range" v-for="range in ranges" :key="`range_${range.id}`">
-                                        {{range.name}}
-                                    </option>
-                                </b-select>
+                                <b-taginput
+                                    v-model="frisbee.range"
+                                    :data="ranges"
+                                    autocomplete
+                                    :open-on-focus="true"
+                                    field="name"
+                                    icon="tag"
+                                    allow-new
+                                    maxtags="1"
+                                    :required="!frisbee.ingredients"
+                                    :create-tag="addToTagInput"
+                                />
                             </b-field>
                             <b-field label="Processus">
-                                <b-select v-model="frisbee.process" expanded>
-                                    <option :value="process" v-for="process in processes" :key="`process_${process.id}`">
-                                        {{process.name}}
-                                    </option>
-                                </b-select>
+                                <b-taginput
+                                    v-model="frisbee.process"
+                                    :data="processes"
+                                    autocomplete
+                                    :open-on-focus="true"
+                                    field="name"
+                                    icon="tag"
+                                    allow-new
+                                    maxtags="1"
+                                    :required="!frisbee.ingredients"
+                                    :create-tag="addToTagInput"
+                                />
                             </b-field>
                             <b-field label="Ingredients">
                                 <b-taginput
@@ -57,23 +71,25 @@
                                     :open-on-focus="true"
                                     field="name"
                                     icon="tag"
-                                    @typing="onIngredientTyping"
+                                    allow-new
+                                    :required="!frisbee.ingredients"
+                                    :create-tag="addToTagInput"
                                 />
                             </b-field>
-                        </form>
-                    </section>
-                    <footer class="modal-card-foot">
-                        <b-button
-                            label="Annuler"
-                            @click="$emit('close')"
-                            type="is-danger"
-                        />
-                        <b-button
-                            native-type="submit"
-                            label="Sauvegarder"
-                            type="is-dark"
-                        />
-                    </footer>
+                        </section>
+                        <footer class="modal-card-foot">
+                            <b-button
+                                label="Annuler"
+                                @click="showModal = false"
+                                type="is-danger"
+                            />
+                            <b-button
+                                native-type="submit"
+                                label="Sauvegarder"
+                                type="is-dark"
+                            />
+                        </footer>
+                    </form>
                 </div>
             </template>
         </b-modal>
@@ -94,7 +110,8 @@ export default {
                 description: "",
                 price: null,
                 range: null,
-                ingredients: [],
+                ingredients: null,
+                process: null
             })
         },
         title: {
@@ -121,35 +138,42 @@ export default {
         ...mapActions('ingredient', {
             getIngredientsList: 'index'
         }),
-        getRanges(value) {
-            this.getRangesList({filter: {name: value}})
+        getRanges() {
+            this.getRangesList()
                 .then(({data}) => {
                     this.ranges = data
                 })
         },
-        getProcesses(value) {
-            this.getProcessesList({filter: {name: value}})
-                .then(({data}) => {
-                    this.ranges = data
+        getProcesses() {
+            this.getProcessesList()
+                .then((data) => {
+                    this.processes = data
                 })
         },
-        onIngredientTyping(value) {
-            this.getRangesList({filter: {name: value}})
-                .then(({data}) => {
+        getIngredients() {
+            this.getIngredientsList()
+                .then((data) => {
                     this.ingredients = data
                 })
         },
         submit() {
+            this.showModal = false
             this.$emit('submit', this.frisbee)
+        },
+        addToTagInput(value) {
+            if (!value.id) {
+                return {
+                    name: value
+                }
+            } else {
+                return value
+            }
         }
     },
     mounted() {
         this.getRanges()
         this.getProcesses()
+        this.getIngredients()
     }
 }
 </script>
-
-<style scoped>
-
-</style>

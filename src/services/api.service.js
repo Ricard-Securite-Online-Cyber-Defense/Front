@@ -9,7 +9,7 @@ axios.defaults.headers.common = {
 };
 
 const ApiService = {
-    baseURL : '/api',
+    baseURL : 'http://localhost:8000/api',
 
     get(resource, params, extra = {}) {
         let qs = require('qs');

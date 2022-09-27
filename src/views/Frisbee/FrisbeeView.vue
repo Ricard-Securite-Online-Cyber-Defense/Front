@@ -17,21 +17,15 @@
             </div>
             <b-table
                 class="w-full flex-auto"
-                :data="frisbees.data"
+                :data="frisbees"
                 paginated
                 striped
                 :mobile-cards="true"
                 :striped="true"
                 :paginated="true"
-                :per-page="frisbees.per_page"
-                :total="frisbees.total"
+                :per-page="10"
+                :total="frisbees.length"
                 :debounce-search="500"
-                backend-sorting
-                backend-pagination
-                backend-filtering
-                @page-change="onPageChange"
-                @sort="onSort"
-                @filters-change="onFilterChange"
             >
                 <b-table-column field="id" label="ID" searchable centered>
                     <template v-slot="props">
@@ -45,7 +39,9 @@
                 </b-table-column>
                 <b-table-column field="descritption" width="300" label="Description">
                     <template v-slot="props">
-                        {{props.row.description}}
+                        <p class="break-all">
+                            {{props.row.description}}
+                        </p>
                     </template>
                 </b-table-column>
                 <b-table-column field="price" label="Prix" searchable>
@@ -55,12 +51,12 @@
                 </b-table-column>
                 <b-table-column field="range" label="Gamme">
                     <template v-slot="props">
-                        {{props.row.range.name}}
+                        {{props.row.range[0].name}}
                     </template>
                 </b-table-column>
-                <b-table-column field="range" label="Processus">
+                <b-table-column field="process" label="Processus">
                     <template v-slot="props">
-                        {{props.row.process.name}}
+                        {{props.row.process[0].name}}
                     </template>
                 </b-table-column>
                 <b-table-column label="Actions">
@@ -93,10 +89,7 @@ export default {
     },
     data() {
         return {
-            frisbees: {},
-            filters: null,
-            page: 0,
-            sort: null,
+            frisbees: [],
         }
     },
     mounted() {
@@ -104,64 +97,51 @@ export default {
     },
     methods: {
         ...mapActions('frisbee', {
-            get: 'index',
+            index: 'index',
             delete: 'delete',
-            update: 'patch'
+            update: 'update',
+            create: 'create',
         }),
         getFrisbee() {
-            this.get({
-                ...this.filters,
-                page: this.page,
-                sort: this.sort
-            }).then(({data}) => {
-                this.frisbees = data
+            this.index().then((data) => {
+                this.formatResult(data)
             })
         },
         updateFrisbee({id, name, description, price, range, ingredients}) {
-            this.update({
-                name,
-                description,
-                price,
-                range,
-                ingredients
-            }, id).then(({data}) => {
-                console.log("urmomgay")
+            this.update(id,{
+                name: name,
+                description: description,
+                price: price,
+                range: range[0],
+                ingredients: ingredients,
+                process: process[0]
+            }).then((data) => {
+                this.formatResult(data)
             })
         },
-        createFrisbee({name, description, price, range, ingredients}) {
-            this.get({
-                name,
-                description,
-                price,
-                range,
-                ingredients
-            }).then(({data}) => {
-                this.frisbees = [...this.frisbees, data]
+        createFrisbee({name, description, price, range, ingredients, process}) {
+            this.create({
+                name: name,
+                description: description,
+                price: price,
+                range: range[0],
+                ingredients: ingredients,
+                process: process[0]
+            }).then((data) => {
+                this.formatResult(data)
             })
         },
         deleteFrisbee(id) {
-            this.delete(id).then((res) => {
-                if (res.status) {
-                    this.frisbees = this.frisbees.filter(frisbee => frisbee.id === id)
-                }
+            this.delete(id).then((data) => {
+                this.formatResult(data)
             })
         },
-        onFilterChange(filter) {
-            this.filters = Object.keys(filter).map((element) => {
-                return {
-                    key: element,
-                    value: filter[element],
-                };
-            });
-            this.getFrisbee()
-        },
-        onPageChange(page) {
-            this.page = page
-            this.getFrisbee()
-        },
-        onSort(sort) {
-            this.sort = sort
-            this.getFrisbee()
+        formatResult(data) {
+            this.frisbees = data.map(e => ({
+                ...e,
+                range: [e.range],
+                process: [e.process],
+            }))
         }
     }
 }
