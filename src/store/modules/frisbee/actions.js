@@ -10,6 +10,7 @@ export default {
         })
     },
     index(state) {
+        console.log(sessionStorage.getItem('token'))
         return new Promise((resolve, reject) => {
             ApiService.get(`/frisbee`)
                 .then(({data}) => {

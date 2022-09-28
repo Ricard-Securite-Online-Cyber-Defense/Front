@@ -1,6 +1,6 @@
 import axios from 'axios'
 
-const authorization  = sessionStorage.getItem('token');
+const authorization  = sessionStorage.getItem('token') ? 'Bearer ' + sessionStorage.getItem('token') : null
 
 axios.defaults.headers.common = {
     'Content-Type': 'application/json',

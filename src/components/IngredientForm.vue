@@ -75,20 +75,10 @@ export default {
     },
     data() {
         return {
-            steps: [],
             showModal: false
         }
     },
     methods: {
-        ...mapActions('step', {
-            getStepsList: 'index'
-        }),
-        getSteps() {
-            this.getStepsList()
-                .then((data) => {
-                    this.steps = data
-                })
-        },
         submit() {
             this.showModal = false
             this.$emit('submit', this.ingredient)
@@ -102,9 +92,6 @@ export default {
                 return value
             }
         }
-    },
-    mounted() {
-        this.getSteps()
     }
 }
 </script>
