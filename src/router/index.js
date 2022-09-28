@@ -46,4 +46,16 @@ const router = new VueRouter({
   routes
 })
 
+router.beforeEach(async (to, from, next) => {
+  if (
+      !sessionStorage.getItem('token') &&
+      to.name !== 'login'
+  ) {
+    // redirect the user to the login page
+    return { name: 'login' }
+  } else {
+      next()
+  }
+})
+
 export default router
