@@ -33,6 +33,11 @@ const routes = [
     name: 'process',
     component: () => import("@/views/ProcessView")
   },
+  {
+    path: '/ingredient',
+    name: 'ingredient',
+    component: () => import("@/views/IngredientView")
+  },
 ]
 
 const router = new VueRouter({

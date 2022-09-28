@@ -8,23 +8,23 @@
     >
         <div class="w-full max-w-[1280px] min-h-[785px]">
             <div class="flex justify-between">
-                <h1>Process</h1>
-                <process-form :title="`Ajouter un process`" @submit="createProcess">
+                <h1>Ingredient</h1>
+                <ingredient-form :title="`Ajouter un ingredient`" @submit="createIngredient">
                     <b-button type="is-dark">
                         <b-icon icon="plus"/>
                     </b-button>
-                </process-form>
+                </ingredient-form>
             </div>
             <b-table
                 class="w-full flex-auto"
-                :data="processes"
+                :data="ingredients"
                 paginated
                 striped
                 :mobile-cards="true"
                 :striped="true"
                 :paginated="true"
                 :per-page="10"
-                :total="processes.length"
+                :total="ingredients.length"
                 :debounce-search="500"
             >
                 <b-table-column field="id" label="ID" searchable centered>
@@ -47,12 +47,12 @@
                 <b-table-column label="Actions">
                     <template v-slot="props">
                         <div class="flex gap-2">
-                            <process-form :title="`Modifier process ${props.row.id}`" :process="props.row" @submit="updateProcess">
+                            <ingredient-form :title="`Modifier ingredient ${props.row.id}`" :ingredient="props.row" @submit="updateIngredient">
                                 <b-button type="is-dark">
                                     <b-icon icon="pen"/>
                                 </b-button>
-                            </process-form>
-                            <b-button type="is-danger" @click="deleteProcess(props.row.id)">
+                            </ingredient-form>
+                            <b-button type="is-danger" @click="deleteIngredient(props.row.id)">
                                 <b-icon icon="trash"/>
                             </b-button>
                         </div>
@@ -65,34 +65,34 @@
 
 <script>
 import {mapActions} from "vuex";
-import ProcessForm from "@/components/ProcessForm";
+import IngredientForm from "@/components/IngredientForm";
 
 export default {
-    name: "ProcessView",
+    name: "IngredientView",
     components: {
-        ProcessForm
+        IngredientForm
     },
     data() {
         return {
-            processes: [],
+            ingredients: [],
         }
     },
     mounted() {
-        this.getProcess()
+        this.getIngredient()
     },
     methods: {
-        ...mapActions('process', {
+        ...mapActions('ingredient', {
             index: 'index',
             delete: 'delete',
             update: 'update',
             create: 'create',
         }),
-        getProcess() {
+        getIngredient() {
             this.index().then((data) => {
                 this.formatResult(data)
             })
         },
-        updateProcess({id, name, description, steps}) {
+        updateIngredient({id, name, description, steps}) {
             this.update({
                 id,
                 params: {
@@ -104,7 +104,7 @@ export default {
                 this.formatResult(data)
             })
         },
-        createProcess({name, description, steps}) {
+        createIngredient({name, description, steps}) {
             this.create({
                 name: name,
                 description: description,
@@ -113,13 +113,13 @@ export default {
                 this.formatResult(data)
             })
         },
-        deleteProcess(id) {
+        deleteIngredient(id) {
             this.delete(id).then((data) => {
                 this.formatResult(data)
             })
         },
         formatResult(data) {
-            this.processes = data
+            this.ingredients = data
         }
     }
 }
