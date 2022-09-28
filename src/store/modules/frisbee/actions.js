@@ -25,7 +25,8 @@ export default {
                 }).catch(e => reject(e))
         })
     },
-    update(state, id, params) {
+    update(state, {id, params}) {
+        console.log(params)
         return new Promise((resolve, reject) => {
             ApiService.put(`/frisbee/${id}`, params)
                 .then(({data}) => {

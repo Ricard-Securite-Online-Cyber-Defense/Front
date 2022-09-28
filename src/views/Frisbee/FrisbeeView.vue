@@ -107,14 +107,17 @@ export default {
                 this.formatResult(data)
             })
         },
-        updateFrisbee({id, name, description, price, range, ingredients}) {
-            this.update(id,{
-                name: name,
-                description: description,
-                price: price,
-                range: range[0],
-                ingredients: ingredients,
-                process: process[0]
+        updateFrisbee({id, name, description, price, range, ingredients, process}) {
+            this.update({
+                id,
+                params: {
+                    name: name,
+                    description: description,
+                    price: price,
+                    range: range[0],
+                    ingredients: ingredients,
+                    process: process[0]
+                }
             }).then((data) => {
                 this.formatResult(data)
             })

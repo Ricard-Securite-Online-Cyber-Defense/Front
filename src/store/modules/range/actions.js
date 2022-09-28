@@ -25,7 +25,7 @@ export default {
                 }).catch(e => reject(e))
         })
     },
-    update(state, id, params) {
+    update(state, {id, params}) {
         return new Promise((resolve, reject) => {
             ApiService.put(`/range/${id}`, params)
                 .then(({data}) => {
