@@ -3,7 +3,7 @@ import ApiService from "@/services/api.service";
 export default {
     get(state, id) {
         return new Promise((resolve, reject) => {
-            ApiService.get(`/process/${id}`)
+            ApiService.get(`/step/${id}`)
                 .then(({data}) => {
                     resolve(data)
                 }).catch(e => reject(e))
@@ -11,7 +11,7 @@ export default {
     },
     index(state) {
         return new Promise((resolve, reject) => {
-            ApiService.get(`/process`)
+            ApiService.get(`/step`)
                 .then(({data}) => {
                     resolve(data)
                 }).catch(e => reject(e))
@@ -19,7 +19,7 @@ export default {
     },
     create(state, params) {
         return new Promise((resolve, reject) => {
-            ApiService.post("/process", params)
+            ApiService.post("/step", params)
                 .then(({data}) => {
                     resolve(data)
                 }).catch(e => reject(e))
@@ -27,7 +27,7 @@ export default {
     },
     update(state, {id, params}) {
         return new Promise((resolve, reject) => {
-            ApiService.put(`/process/${id}`, params)
+            ApiService.put(`/step/${id}`, params)
                 .then(({data}) => {
                     resolve(data)
                 }).catch(e => reject(e))
@@ -35,7 +35,7 @@ export default {
     },
     delete(state, id) {
         return new Promise((resolve, reject) => {
-            ApiService.delete(`/process/${id}`)
+            ApiService.delete(`/step/${id}`)
                 .then(({data}) => {
                     resolve(data)
                 }).catch(e => reject(e))

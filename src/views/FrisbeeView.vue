@@ -56,7 +56,7 @@
                 </b-table-column>
                 <b-table-column field="process" label="Processus">
                     <template v-slot="props">
-                        {{props.row.process[0].name}}
+                        {{props.row.process && props.row.process[0] ? props.row.process[0].name : "Non rensaigné"}}
                     </template>
                 </b-table-column>
                 <b-table-column label="Actions">
@@ -80,7 +80,7 @@
 
 <script>
 import {mapActions} from "vuex";
-import FrisbeeForm from "@/components/frisbee/FrisbeeForm";
+import FrisbeeForm from "@/components/FrisbeeForm";
 
 export default {
     name: "FrisbeeView",

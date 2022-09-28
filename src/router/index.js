@@ -26,18 +26,13 @@ const routes = [
   {
     path: '/frisbee',
     name: 'frisbee',
-    component: () => import("@/views/Frisbee/FrisbeeView")
+    component: () => import("@/views/FrisbeeView")
   },
   {
-    path: '/frisbee/',
-    name: 'createFrisbee',
-    component: () => import("@/views/Frisbee/FrisbeeView")
+    path: '/process',
+    name: 'process',
+    component: () => import("@/views/ProcessView")
   },
-  {
-    path: '/frisbee/:id',
-    name: 'editFrisbee',
-    component: () => import("@/views/Frisbee/FrisbeeView")
-  }
 ]
 
 const router = new VueRouter({

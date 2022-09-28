@@ -29,7 +29,7 @@
                             <b-field label="Nom">
                                 <b-input name="name" v-model="frisbee.name" required/>
                             </b-field>
-                            <b-field label="Description" type="textarea">
+                            <b-field label="Description">
                                 <b-input name="name" type="textarea" v-model="frisbee.description" required/>
                             </b-field>
                             <b-field label="Price">

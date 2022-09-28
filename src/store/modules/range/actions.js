@@ -35,7 +35,7 @@ export default {
     },
     delete(state, id) {
         return new Promise((resolve, reject) => {
-            ApiService.put(`/range/${id}`)
+            ApiService.delete(`/range/${id}`)
                 .then(({data}) => {
                     resolve(data)
                 }).catch(e => reject(e))
