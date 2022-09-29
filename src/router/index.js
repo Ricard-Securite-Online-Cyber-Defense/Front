@@ -51,8 +51,7 @@ router.beforeEach(async (to, from, next) => {
       !sessionStorage.getItem('token') &&
       to.name !== 'login'
   ) {
-    // redirect the user to the login page
-    return { name: 'login' }
+    return next({ name: 'login' })
   } else {
       next()
   }
